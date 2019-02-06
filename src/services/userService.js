@@ -64,7 +64,6 @@ export function getUser(id) {
  * @return {Promise}
  */
 export function createUser(user) {
-  console.log('creating...')
   return new Promise((resolve, reject) => {
     try {
       if (!user.username || !user.password) {
@@ -73,11 +72,9 @@ export function createUser(user) {
       auth
       .createUserWithEmailAndPassword(user.email, user.password)
       .then(r => {
-        console.log('here')
         if (!user.type) {
           user.type = "Student"
         }
-        console.log(user)
         database.ref("users").push().set(user)
         resolve(user)
       })
@@ -85,7 +82,7 @@ export function createUser(user) {
         reject(e)
       })
     } catch (e) {
-      console.log(e)
+      reject(e)
     }
   })
 }
@@ -110,3 +107,25 @@ export function updateUser(id, user) {
 export function deleteUser(id) {
   return new User({ id }).fetch().then(user => user.destroy());
 }
+
+
+/**
+ * Login with email and password
+ * @param  {String} email
+ * @param  {String} password
+ * @return {Promise}
+ */
+export function login(user) {
+  return new Promise((resolve, reject) => {
+    auth
+    .signInWithEmailAndPassword(user.email, user.password)
+    .then((r) => {
+      console.log(r)
+    })
+    .catch(function(error) {
+      console.log(error)
+      reject(error)
+    });
+  })
+}
+

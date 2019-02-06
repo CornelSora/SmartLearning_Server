@@ -30,7 +30,6 @@ router.get('/:id', (req, res, next) => {
  * POST /api/users
  */
 router.post('/', (req, res, next) => {
-  console.log(req.body)
   userService
     .createUser(req.body)
     .then(data => res.status(HttpStatus.CREATED).send(data))

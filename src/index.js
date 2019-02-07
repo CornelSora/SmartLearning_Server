@@ -1,5 +1,4 @@
 import './env';
-import './db';
 import cors from 'cors';
 import path from 'path';
 import Raven from 'raven';

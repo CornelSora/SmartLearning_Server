@@ -10,7 +10,7 @@ const router = Router();
 router.post('/login', (req, res, next) => {
   userService
     .login(req.body)
-    .then(data => res.status(HttpStatus.ACCEPTED))
+    .then(data => res.status(HttpStatus.ACCEPTED).send(data))
     .catch(err => res.status(HttpStatus.BAD_REQUEST).send(err));
 });
 

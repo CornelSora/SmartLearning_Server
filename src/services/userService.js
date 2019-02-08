@@ -17,7 +17,6 @@ export function getAllUsers() {
         let usersIds = Object.keys(usersBD);
         for (let i = 0; i < usersIds.length; i++) {
           let currUser = usersBD[usersIds[i]];
-          currUser.UID = usersIds[i];
           users.push(currUser);
         }
         resolve(users);

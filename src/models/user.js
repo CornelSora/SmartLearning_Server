@@ -1,17 +1,16 @@
-import bookshelf from '../db';
-
-const TABLE_NAME = 'users';
-
 /**
  * User model.
  */
-class User extends bookshelf.Model {
-  get tableName() {
-    return TABLE_NAME;
-  }
-
-  get hasTimestamps() {
-    return true;
+class User {
+  constructor(email, username, type, uid) {
+    if (!type) {
+      this.type = 'Student';
+    } else {
+      this.type = type;
+    }
+    this.email = email;
+    this.username = username;
+    this.uid = uid;
   }
 }
 

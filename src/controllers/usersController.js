@@ -9,11 +9,12 @@ const router = Router();
  * GET /api/users
  */
 router.get('/', (req, res, next) => {
-  console.log('getting users')
   userService
     .getAllUsers()
     .then(data => res.send(data))
-    .catch(err => { console.log(err); next(err) });
+    .catch(err => {
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
+    });
 });
 
 /**

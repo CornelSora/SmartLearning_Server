@@ -34,6 +34,27 @@ export function getAllProblems() {
 }
 
 /**
+ * @param  {Nmber}  problemUID
+ * @return {Promise}
+ */
+export function getProblem(id) {
+  let problemsData = database.ref(`problems/${id}`);
+
+  return new Promise((resolve, reject) => {
+    try {
+      problemsData.once('value', snapshot => {
+        let problem = {};
+        problem = snapshot.val();
+        problem ? (problem.id = snapshot.key) : null;
+        resolve(problem);
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+}
+
+/**
  * Create new problem.
  *
  * @param  {Object}  problem

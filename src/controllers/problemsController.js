@@ -16,6 +16,16 @@ router.get('/', (req, res, next) => {
 });
 
 /**
+ * GET /api/problems/:id
+ */
+router.get('/:id', (req, res, next) => {
+  problemService
+    .getProblem(req.params.id)
+    .then(data => res.status(HttpStatus.OK).send(data))
+    .catch(err => res.status(HttpStatus.BAD_REQUEST).send(err));
+});
+
+/**
  * POST /api/problems
  */
 router.post('/', (req, res, next) => {

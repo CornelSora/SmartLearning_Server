@@ -1,6 +1,7 @@
 import firebase from '../firebase/firebase.js';
-const database = firebase.database;
+// import Solution from '../models/solution.js';
 
+const database = firebase.database;
 /**
  * Get all problems.
  *
@@ -105,6 +106,58 @@ export function deleteProblem(problemID) {
     try {
       database.ref('problems/' + problemID).remove();
       resolve();
+    } catch (e) {
+      reject(e);
+    }
+  });
+}
+
+/**
+ * Save problem solution.
+ *
+ * @param  {Number}  problemID
+ * @param  {Number}  userID
+ * @param  {String}  solution
+ * @return {Promise}
+ */
+export function saveProblemSolution(problemID, userID, solution) {
+  return new Promise((resolve, reject) => {
+    try {
+      if (!problemID || !userID) {
+        reject('Problem id and user id cannot be null');
+      }
+      //  const mySolution = new Solution(userID, problemID, solution);
+      // ref
+      // .orderBy('userID')
+      // .equalTo(userID)
+      // .on('child_added', function(snapshot) {
+      //     console.log('found!!!')
+      //     var problemSolutionBD = snapshot.val();
+      //     if (!problemSolutionBD) {
+      //       reject('No problems saved');
+      //       return;
+      //     }
+
+      //     let problemIds = Object.keys(problemSolutionBD);
+      //     for (let i = 0; i < problemIds.length; i++) {
+      //       let currProblem = problemSolutionBD[problemIds[i]];
+      //       console.log(currProblem)
+      //     }
+      // });
+
+      // var query = ref("problemSolutions").orderByChild("solution").equalTo("test");
+      // query.once("child_added", function(snapshot) {
+      //   //  snapshot.ref.update({ displayName: "New trainer" })
+      //   console.log('found it')
+      // });
+      database.ref(`problems/${problemID}/solutions`).update(JSON.parse(`{"${userID}": "${solution}"}`));
+
+      // database
+      // .ref('problemSolutions')
+      // .push()
+      // .set(mySolution);
+      //  resolve(problem);
+      resolve('done');
     } catch (e) {
       reject(e);
     }

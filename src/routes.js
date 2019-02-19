@@ -3,6 +3,7 @@ import swaggerSpec from './utils/swagger';
 import usersController from './controllers/usersController';
 import accountController from './controllers/accountController';
 import problemsController from './controllers/problemsController';
+import solutionController from './controllers/solutionController';
 
 /**
  * Contains all API routes for the application.
@@ -57,5 +58,5 @@ router.get('/', (req, res) => {
 router.use('/users', usersController);
 router.use('/account', accountController);
 router.use('/problems', problemsController);
-
+router.use('/solutions', solutionController);
 export default router;

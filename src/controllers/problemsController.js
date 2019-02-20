@@ -7,7 +7,6 @@ const router = Router();
 /**
  * GET /api/problems
  */
-
 router.get('/', (req, res, next) => {
   problemService
     .getAllProblems()
@@ -16,11 +15,11 @@ router.get('/', (req, res, next) => {
 });
 
 /**
- * GET /api/problems/:id
+ * GET /api/problems/:problemID/:userID
  */
-router.get('/:id', (req, res, next) => {
+router.get('/:problemID/:userID', (req, res, next) => {
   problemService
-    .getProblem(req.params.id)
+    .getProblem(req.params.problemID, req.params.userID)
     .then(data => res.status(HttpStatus.OK).send(data))
     .catch(err => res.status(HttpStatus.BAD_REQUEST).send(err));
 });

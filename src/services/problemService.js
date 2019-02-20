@@ -37,19 +37,30 @@ export function getAllProblems() {
 }
 
 /**
- * @param  {Nmber}  problemUID
+ * @param  {Number}  problemID
+ * @param  {Number}  userID
  * @return {Promise}
  */
-export function getProblem(id) {
-  let problemsData = database.ref(`problems/${id}`);
-
+export function getProblem(problemID, userID) {
   return new Promise((resolve, reject) => {
     try {
+      if (!problemID || !userID) {
+        reject("You must send problem id and user id");
+        return;
+      }
+    
+      let problemsData = database.ref(`problems/${problemID}`);
       problemsData.once('value', snapshot => {
         let problem = {};
         problem = snapshot.val();
+        if (!problem) {
+          reject(`No problems were found with the id: ${problemID}`);
+          return;
+        }
         problem ? (problem.id = snapshot.key) : null;
-        resolve(new Problem(problem));
+        let problemResponse = new Problem(problem)
+        problemResponse.solution = problem.solutions[userID]
+        resolve(problemResponse);
       });
     } catch (e) {
       reject(e);

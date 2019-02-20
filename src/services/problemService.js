@@ -1,4 +1,5 @@
 import firebase from '../firebase/firebase.js';
+import Problem from '../models/problem';
 // import Solution from '../models/solution.js';
 
 const database = firebase.database;
@@ -24,7 +25,8 @@ export function getAllProblems() {
         for (let i = 0; i < problemIds.length; i++) {
           let currProblem = problemBD[problemIds[i]];
           currProblem.UID = problemIds[i];
-          problems.push(currProblem);
+          const responseProblem = new Problem(currProblem);
+          problems.push(responseProblem);
         }
         resolve(problems);
       });
@@ -47,7 +49,7 @@ export function getProblem(id) {
         let problem = {};
         problem = snapshot.val();
         problem ? (problem.id = snapshot.key) : null;
-        resolve(problem);
+        resolve(new Problem(problem));
       });
     } catch (e) {
       reject(e);
@@ -150,7 +152,8 @@ export function saveProblemSolution(problemID, userID, solution) {
       //   //  snapshot.ref.update({ displayName: "New trainer" })
       //   console.log('found it')
       // });
-      database.ref(`problems/${problemID}/solutions`).update(JSON.parse(`{"${userID}": "${solution}"}`));
+      const problemSolution = JSON.parse(`{"${userID}": "${solution}"}`);
+      database.ref(`problems/${problemID}/solutions`).update(problemSolution);
 
       // database
       // .ref('problemSolutions')
@@ -158,6 +161,28 @@ export function saveProblemSolution(problemID, userID, solution) {
       // .set(mySolution);
       //  resolve(problem);
       resolve('done');
+    } catch (e) {
+      reject(e);
+    }
+  });
+}
+
+/**
+ * @param  {Nmber}  userID
+ * @param  {Nmber}  problemID
+ * @return {Promise}
+ */
+export function getSolution(userID, problemID) {
+  let problemsData = database.ref(`problems/${problemID}`);
+
+  return new Promise((resolve, reject) => {
+    try {
+      problemsData.once('value', snapshot => {
+        let problem = {};
+        problem = snapshot.val();
+        let returnSolution = { solution: problem.solutions[userID] };
+        resolve(returnSolution);
+      });
     } catch (e) {
       reject(e);
     }

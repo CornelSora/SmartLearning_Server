@@ -45,21 +45,23 @@ export function getProblem(problemID, userID) {
   return new Promise((resolve, reject) => {
     try {
       if (!problemID || !userID) {
-        reject("You must send problem id and user id");
+        reject('You must send problem id and user id');
+
         return;
       }
-    
+
       let problemsData = database.ref(`problems/${problemID}`);
       problemsData.once('value', snapshot => {
         let problem = {};
         problem = snapshot.val();
         if (!problem) {
           reject(`No problems were found with the id: ${problemID}`);
+
           return;
         }
         problem ? (problem.id = snapshot.key) : null;
-        let problemResponse = new Problem(problem)
-        problemResponse.solution = problem.solutions[userID]
+        let problemResponse = new Problem(problem);
+        problemResponse.solution = problem.solutions ? problem.solutions[userID] : 'Enter your code here';
         resolve(problemResponse);
       });
     } catch (e) {

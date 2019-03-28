@@ -18,7 +18,8 @@
     "test": "NODE_ENV=test mocha --recursive --require babel-register test",
     "prettify": "prettier --single-quote --print-width 120 --write \"src/**/*.js\" \"test/**/*.js\"",
     "start:dev": "nodemon --watch .env --watch src --exec babel-node src --source-maps",
-    "test:coverage": "NODE_ENV=test nyc --require babel-register --reporter lcov --reporter text mocha --recursive test"
+    "test:coverage": "NODE_ENV=test nyc --require babel-register --reporter lcov --reporter text mocha --recursive test",
+    "debug": "node --nolazy --inspect-brk=8083 dist/index.js"
   },
   "lint-staged": {
     "*.js": [

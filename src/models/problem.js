@@ -20,6 +20,9 @@ class Problem {
     if (problem.name !== undefined) {
       this.name = problem.name;
     }
+    if (problem.functions !== undefined) {
+      this.functions = problem.functions
+    }
     this.solution = ''
   }
 }

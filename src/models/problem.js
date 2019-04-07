@@ -3,8 +3,9 @@
  */
 class Problem {
   constructor(problem) {
-    if (problem == null)
-      return
+    if (problem === null) {
+      return;
+    }
     if (problem.addedBy !== undefined) {
       this.addedBy = problem.addedBy;
     }
@@ -21,9 +22,9 @@ class Problem {
       this.name = problem.name;
     }
     if (problem.functions !== undefined) {
-      this.functions = problem.functions
+      this.functions = problem.functions;
     }
-    this.solution = ''
+    this.solution = '';
   }
 }
 

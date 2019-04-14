@@ -1,4 +1,6 @@
 import firebase from '../firebase/firebase.js';
+import { hashCode } from 'hashcode';
+
 const database = firebase.database;
 const auth = firebase.auth;
 /**
@@ -92,6 +94,32 @@ export function createUser(user) {
         .catch(e => {
           reject(e);
         });
+    } catch (e) {
+      reject(e);
+    }
+  });
+}
+
+/**
+ * Create new user.
+ *
+ * @param  {Object}  user
+ * @return {Promise}
+ */
+export function addNewClient(reqBody) {
+  return new Promise((resolve, reject) => {
+    try {
+      const userID = reqBody.userID;
+      const clientInfo = reqBody.clientInfo;
+      if (!userID || !clientInfo) {
+        reject('User id and client info cannot be null');
+      }
+      const emailHash = hashCode().value(clientInfo.email);
+      let client = {};
+      client[emailHash] = clientInfo;
+      //  const client = JSON.parse(`{"${emailHash}": "${JSON.stringify(clientInfo)}"}`);
+      database.ref(`users/${userID}/clients`).update(client);
+      resolve('done');
     } catch (e) {
       reject(e);
     }

@@ -38,6 +38,16 @@ router.post('/', (req, res, next) => {
 });
 
 /**
+ * POST /api/users/clients
+ */
+router.post('/clients', (req, res, next) => {
+  userService
+    .addNewClient(req.body)
+    .then(data => res.status(HttpStatus.CREATED).send(data))
+    .catch(err => res.status(HttpStatus.BAD_REQUEST).send(err.toString()));
+});
+
+/**
  * PUT /api/users/:id
  */
 router.put('/:id', findUser, userValidator, (req, res, next) => {

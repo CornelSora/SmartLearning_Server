@@ -47,6 +47,7 @@
     "express": "^4.15.3",
     "firebase": "^5.4.0",
     "firebase-admin": "^5.13.1",
+    "hashcode": "^1.0.3",
     "helmet": "^3.6.1",
     "http-status-codes": "^1.1.6",
     "joi": "^11.0.1",

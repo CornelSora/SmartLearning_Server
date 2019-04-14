@@ -141,38 +141,8 @@ export function saveProblemSolution(problemID, userID, solution) {
       if (!problemID || !userID) {
         reject('Problem id and user id cannot be null');
       }
-      //  const mySolution = new Solution(userID, problemID, solution);
-      // ref
-      // .orderBy('userID')
-      // .equalTo(userID)
-      // .on('child_added', function(snapshot) {
-      //     console.log('found!!!')
-      //     var problemSolutionBD = snapshot.val();
-      //     if (!problemSolutionBD) {
-      //       reject('No problems saved');
-      //       return;
-      //     }
-
-      //     let problemIds = Object.keys(problemSolutionBD);
-      //     for (let i = 0; i < problemIds.length; i++) {
-      //       let currProblem = problemSolutionBD[problemIds[i]];
-      //       console.log(currProblem)
-      //     }
-      // });
-
-      // var query = ref("problemSolutions").orderByChild("solution").equalTo("test");
-      // query.once("child_added", function(snapshot) {
-      //   //  snapshot.ref.update({ displayName: "New trainer" })
-      //   console.log('found it')
-      // });
       const problemSolution = JSON.parse(`{"${userID}": "${solution}"}`);
       database.ref(`problems/${problemID}/solutions`).update(problemSolution);
-
-      // database
-      // .ref('problemSolutions')
-      // .push()
-      // .set(mySolution);
-      //  resolve(problem);
       resolve('done');
     } catch (e) {
       reject(e);

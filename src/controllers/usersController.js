@@ -43,6 +43,16 @@ router.post('/', (req, res, next) => {
 router.post('/clients', (req, res, next) => {
   userService
     .addNewClient(req.body)
+    .then(data => res.send(data))
+    .catch(err => res.status(HttpStatus.BAD_REQUEST).send(err.toString()));
+});
+
+/**
+ * GET /api/users/clients
+ */
+router.get('/clients/:id', (req, res, next) => {
+  userService
+    .getClients(req.params.id)
     .then(data => res.status(HttpStatus.CREATED).send(data))
     .catch(err => res.status(HttpStatus.BAD_REQUEST).send(err.toString()));
 });

@@ -4,6 +4,7 @@ import usersController from './controllers/usersController';
 import accountController from './controllers/accountController';
 import problemsController from './controllers/problemsController';
 import solutionController from './controllers/solutionController';
+import emailController from './controllers/emailController';
 
 /**
  * Contains all API routes for the application.
@@ -59,4 +60,5 @@ router.use('/users', usersController);
 router.use('/account', accountController);
 router.use('/problems', problemsController);
 router.use('/solutions', solutionController);
+router.use('/emails', emailController);
 export default router;

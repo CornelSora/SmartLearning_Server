@@ -101,7 +101,7 @@ export function createUser(user) {
 }
 
 /**
- * Create new user.
+ * Create new client.
  *
  * @param  {Object}  user
  * @return {Promise}
@@ -125,6 +125,32 @@ export function addNewClient(reqBody) {
     }
   });
 }
+
+/**
+ * Get all clients.
+ * @return {Promise}
+ */
+export function getClients(userID) {
+  var clientsData = database.ref(`users/${userID}/clients`)
+  let clients = []
+  return new Promise((resolve, reject) => {
+    try {
+      clientsData.once('value', snapshot => {
+        let user = {};
+        let usersBD = snapshot.val();
+        let usersIds = Object.keys(usersBD);
+        for (let i = 0; i < usersIds.length; i++) {
+          let currUser = usersBD[usersIds[i]];
+          clients.push(currUser);
+        }
+        resolve(clients);
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+}
+
 
 // /**
 //  * Update a user.

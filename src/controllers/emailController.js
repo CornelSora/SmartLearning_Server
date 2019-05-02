@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import HttpStatus from 'http-status-codes';
-import * as emailService from '../services/emailService'
+import * as emailService from '../services/emailService';
 
 const router = Router();
 

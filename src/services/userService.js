@@ -131,8 +131,9 @@ export function addNewClient(reqBody) {
  * @return {Promise}
  */
 export function getClients(userID) {
-  var clientsData = database.ref(`users/${userID}/clients`)
-  let clients = []
+  let clientsData = database.ref(`users/${userID}/clients`);
+  let clients = [];
+
   return new Promise((resolve, reject) => {
     try {
       clientsData.once('value', snapshot => {
@@ -150,7 +151,6 @@ export function getClients(userID) {
     }
   });
 }
-
 
 // /**
 //  * Update a user.

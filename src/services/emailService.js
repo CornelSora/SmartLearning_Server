@@ -1,14 +1,28 @@
 import { hashCode } from 'hashcode';
-
-console.log('* [example 1.1] sending test email');
+import CryptoJS from 'crypto-js';
+const key = '1@!~abc';
+// Decrypt
+var ciphertext = 'U2FsdGVkX1%20t82dSTmNSHgQ00qECwo3mMlx0xad%2FEoTXCxdOeUjd21e0tHGzhCwh5scQB1fbuL3ZN8%20f8dkks1pQArLA%2FSyTXGBCQYS0WJY%3D'
+var bytes  = CryptoJS.AES.decrypt(ciphertext, key);
+var plaintext = bytes.toString(CryptoJS.enc.Utf8);
+console.log(plaintext);
 
 // Require'ing module and setting default options
 
 export function sendEmailTo(email) {
-  console.log(email);
-
   return new Promise((resolve, reject) => {
     try {
+      var objToken = {
+        emailHash: hashCode().value(email),
+        date: new Date()
+      }
+      const token = CryptoJS.AES.encrypt(JSON.stringify(objToken), key);
+      objToken.token = token.toString();
+      var bytes  = CryptoJS.AES.decrypt(token.toString(), key);
+      var plaintext = bytes.toString(CryptoJS.enc.Utf8);
+      console.log('decrypted')
+      console.log(plaintext);
+
       let send = require('gmail-send')({
         // var send = require('../index.js')({
         user: 'codetestercrn@gmail.com',
@@ -30,8 +44,9 @@ export function sendEmailTo(email) {
         // html:    '<b>html text</b>'            // HTML
       });
       send();
-      resolve();
+      resolve(objToken);
     } catch (e) {
+      console.error(e)
       reject(e);
     }
   });

@@ -1,5 +1,6 @@
 import firebase from '../firebase/firebase.js';
 import { hashCode } from 'hashcode';
+import CryptoJS from 'crypto-js'
 
 const database = firebase.database;
 const auth = firebase.auth;
@@ -189,5 +190,36 @@ export function login(user) {
       .catch(function(error) {
         reject(error);
       });
+  });
+}
+
+export function isTokenValid(token) {
+  return new Promise((resolve, reject) => {
+    try {
+      console.log(token)
+      var bytes  = CryptoJS.AES.decrypt(token, '1@!~abc');
+      console.log(bytes)
+      var plainJSON = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+      console.log(plainJSON)
+      resolve(plainJSON.emailHash);
+    } catch (e) {
+      console.log(e)
+      reject(e);
+    }
+  });
+}
+
+export function addInvitedUser(emailInfo) {
+  return new Promise((resolve, reject) => {
+    try {
+      const clientInfo = emailInfo;
+      let client = {};
+      client[clientInfo.emailHash] = clientInfo;
+      //  const client = JSON.parse(`{"${emailHash}": "${JSON.stringify(clientInfo)}"}`);
+      database.ref('invitedUsers').update(client);
+      resolve('done');
+    } catch (e) {
+      reject(e);
+    }
   });
 }

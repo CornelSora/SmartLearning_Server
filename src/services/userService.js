@@ -1,6 +1,6 @@
 import firebase from '../firebase/firebase.js';
 import { hashCode } from 'hashcode';
-import CryptoJS from 'crypto-js'
+import CryptoJS from 'crypto-js';
 
 const database = firebase.database;
 const auth = firebase.auth;
@@ -138,7 +138,6 @@ export function getClients(userID) {
   return new Promise((resolve, reject) => {
     try {
       clientsData.once('value', snapshot => {
-        let user = {};
         let usersBD = snapshot.val();
         let usersIds = Object.keys(usersBD);
         for (let i = 0; i < usersIds.length; i++) {
@@ -196,14 +195,10 @@ export function login(user) {
 export function isTokenValid(token) {
   return new Promise((resolve, reject) => {
     try {
-      console.log(token)
-      var bytes  = CryptoJS.AES.decrypt(token, '1@!~abc');
-      console.log(bytes)
-      var plainJSON = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-      console.log(plainJSON)
+      let bytes = CryptoJS.AES.decrypt(token, '1@!~abc');
+      let plainJSON = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
       resolve(plainJSON.emailHash);
     } catch (e) {
-      console.log(e)
       reject(e);
     }
   });

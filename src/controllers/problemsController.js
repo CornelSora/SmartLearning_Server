@@ -42,8 +42,7 @@ router.delete('/problems/:id', (req, res) => {
     .deleteProblem(req.params.id)
     .then(() => res.status(HttpStatus.OK).send())
     .catch(err => {
-      res.status(HttpStatus.BAD_REQUEST).send(err.toString())
-      console.log(err.toString())
+      res.status(HttpStatus.BAD_REQUEST).send(err.toString());
     });
 });
 

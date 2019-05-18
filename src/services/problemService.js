@@ -28,9 +28,9 @@ export function getAllProblems() {
           const responseProblem = new Problem(currProblem, false);
           problems.push(responseProblem);
         }
-        var result = {}
+        let result = {};
         result.problems = problems;
-        result.daily = getDailyProblem(problems)
+        result.daily = getDailyProblem(problems);
         resolve(result);
       });
     } catch (e) {
@@ -187,25 +187,27 @@ export function getSolution(userID, problemID, daily = false) {
   });
 }
 
-var dailyProblems = {};
-var generatedIndexes = [];
+let dailyProblems = {};
+let generatedIndexes = [];
 
 /**
  * GET random daily problem as recommendation
  * @return {Promise}
  */
 export function getDailyProblem(problems) {
-  const today = new Date().toJSON().slice(0,10).toString();
+  const today = new Date()
+    .toJSON()
+    .slice(0, 10)
+    .toString();
 
   if (dailyProblems[today]) {
     return dailyProblems[today];
   }
-  console.log("getting the problems")
   let randomIndex = Math.floor(Math.random() * problems.length);
   while (generatedIndexes.indexOf(randomIndex) > -1 && generatedIndexes.length < problems.length) {
     randomIndex = Math.floor(Math.random() * problems.length);
   }
-  if (generatedIndexes.length == problems.length) {
+  if (generatedIndexes.length === problems.length) {
     generatedIndexes = [];
   }
   const randomProblemUID = problems[randomIndex].UID;
@@ -219,8 +221,8 @@ export function getDailyProblem(problems) {
       .push()
       .set(randomProblem);
   } catch (e) {
-    console.log(e)
   }
+
   return randomProblemUID;
 }
 
@@ -245,7 +247,7 @@ export function getDailyProblem(problems) {
 //       .catch(err => {
 //         console.log(err)
 //         reject(err)
-//       }) 
+//       })
 
 // /**
 //  * Update a problem.

@@ -10,7 +10,7 @@ router.get('/pay', (req, res, next) => {
     .then(data => res.send(data))
     .catch(err => {
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
-  });
+    });
 });
 
 export default router;

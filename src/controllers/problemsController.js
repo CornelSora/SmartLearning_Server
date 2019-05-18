@@ -41,7 +41,20 @@ router.delete('/problems/:id', (req, res) => {
   problemService
     .deleteProblem(req.params.id)
     .then(() => res.status(HttpStatus.OK).send())
-    .catch(err => res.status(HttpStatus.BAD_REQUEST).send(err));
+    .catch(err => {
+      res.status(HttpStatus.BAD_REQUEST).send(err.toString())
+      console.log(err.toString())
+    });
 });
+
+// router.get('/daily-problem', (req, res) => {
+//   problemService
+//     .getDailyProblem()
+//     .then(data => res.status(HttpStatus.OK).send(data))
+//     .catch(err => {
+//       res.status(HttpStatus.BAD_REQUEST).send(err.toString())
+//       console.log(err.toString())
+//     });
+// })
 
 export default router;

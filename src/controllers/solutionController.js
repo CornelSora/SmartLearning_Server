@@ -9,7 +9,7 @@ const router = Router();
  */
 router.post('/', (req, res, next) => {
   problemService
-    .saveProblemSolution(req.body.problemID, req.body.userID, req.body.solution)
+    .saveProblemSolution(req.body.problemID, req.body.userID, req.body.solution, req.body.daily)
     .then(data => res.status(HttpStatus.ACCEPTED).send(data))
     .catch(err => res.status(HttpStatus.BAD_REQUEST).send(err));
 });
@@ -19,7 +19,7 @@ router.post('/', (req, res, next) => {
  */
 router.get('/:problemID/:userID', (req, res, next) => {
   problemService
-    .getSolution(req.params.userID, req.params.problemID)
+    .getSolution(req.params.userID, req.params.problemID, req.params.daily)
     .then(data => res.status(HttpStatus.ACCEPTED).send(data))
     .catch(err => res.status(HttpStatus.BAD_REQUEST).send(err));
 });

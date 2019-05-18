@@ -1,5 +1,5 @@
 {
-  "name": "express-api-es6-starter",
+  "name": "backend_smart_learning",
   "version": "1.0.0",
   "description": "Express API ES6 Starter",
   "scripts": {
@@ -57,6 +57,7 @@
     "knex": "^0.16.5",
     "lodash": "^4.17.11",
     "morgan": "^1.9.1",
+    "paypal-rest-sdk": "^1.8.1",
     "pg": "^7.3.0",
     "raven": "^2.6.3",
     "serve-favicon": "^2.4.3",

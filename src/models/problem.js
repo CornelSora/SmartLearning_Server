@@ -2,7 +2,7 @@
  * User model.
  */
 class Problem {
-  constructor(problem) {
+  constructor(problem, includeFunctions = true) {
     if (problem === null) {
       return;
     }
@@ -21,7 +21,7 @@ class Problem {
     if (problem.name !== undefined) {
       this.name = problem.name;
     }
-    if (problem.functions !== undefined) {
+    if (problem.functions !== undefined && includeFunctions) {
       this.functions = problem.functions;
     }
     this.solution = '';

@@ -5,6 +5,7 @@ import accountController from './controllers/accountController';
 import problemsController from './controllers/problemsController';
 import solutionController from './controllers/solutionController';
 import emailController from './controllers/emailController';
+import paypalController from './controllers/paypalController';
 
 /**
  * Contains all API routes for the application.
@@ -61,4 +62,5 @@ router.use('/account', accountController);
 router.use('/problems', problemsController);
 router.use('/solutions', solutionController);
 router.use('/emails', emailController);
+router.use('/paypal', paypalController);
 export default router;

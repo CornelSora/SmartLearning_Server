@@ -8,5 +8,5 @@ WORKDIR /app
 COPY . /app/
 
 # Default app commands
-ENTRYPOINT ["npm"]
+ENTRYPOINT ["yarn"]
 CMD ["start:dev"]

@@ -4,9 +4,9 @@ FROM node:carbon-alpine
 EXPOSE 8848
 
 # Copy app and install packages
-WORKDIR /app
-COPY . /app/
+WORKDIR /
+COPY ./src/
 
 # Default app commands
-ENTRYPOINT ["yarn"]
+ENTRYPOINT ["npm"]
 CMD ["start:dev"]

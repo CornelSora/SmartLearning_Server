@@ -6,6 +6,7 @@ import problemsController from './controllers/problemsController';
 import solutionController from './controllers/solutionController';
 import emailController from './controllers/emailController';
 import paypalController from './controllers/paypalController';
+import * as firebaseMiddleware from 'express-firebase-middleware';
 
 /**
  * Contains all API routes for the application.
@@ -57,10 +58,10 @@ router.get('/', (req, res) => {
   });
 });
 
-router.use('/users', usersController);
+router.use('/users', firebaseMiddleware.auth, usersController);
 router.use('/account', accountController);
-router.use('/problems', problemsController);
-router.use('/solutions', solutionController);
-router.use('/emails', emailController);
-router.use('/paypal', paypalController);
+router.use('/problems', firebaseMiddleware.auth, problemsController);
+router.use('/solutions', firebaseMiddleware.auth, solutionController);
+router.use('/emails', firebaseMiddleware.auth, emailController);
+router.use('/paypal', firebaseMiddleware.auth, paypalController);
 export default router;

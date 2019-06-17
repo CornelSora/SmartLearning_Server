@@ -12,7 +12,6 @@ import compression from 'compression';
 import json from './middlewares/json';
 import logger, { logStream } from './utils/logger';
 import * as errorHandler from './middlewares/errorHandler';
-import * as firebaseMiddleware from 'express-firebase-middleware';
 
 // Initialize Raven
 // https://docs.sentry.io/clients/node/integrations/express/
@@ -41,7 +40,6 @@ app.use(morgan('tiny', { stream: logStream }));
 app.use(bodyParser.json());
 app.use(errorHandler.bodyParser);
 app.use(json);
-app.use(firebaseMiddleware.auth);
 
 // Everything in the public folder is served as static content
 app.use(express.static(path.join(__dirname, '../public/api-docs')));

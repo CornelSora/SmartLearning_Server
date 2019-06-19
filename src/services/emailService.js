@@ -1,7 +1,7 @@
 import { hashCode } from 'hashcode';
 import CryptoJS from 'crypto-js';
 const key = '1@!~abc';
-const URL = 'http://localhost:8080/problem';
+const URL = 'http://localhost:8080/#/problem';
 
 // Decrypt
 //  let ciphertext =
@@ -12,12 +12,15 @@ const URL = 'http://localhost:8080/problem';
 
 // Require'ing module and setting default options
 
-export function sendEmailTo(email) {
+export function sendEmailTo(email, problemId) {
   return new Promise((resolve, reject) => {
     try {
       let objToken = {
         emailHash: hashCode().value(email),
-        date: new Date().toJSON().slice(0,10).replace(/-/g,'/')
+        date: new Date()
+          .toJSON()
+          .slice(0, 10)
+          .replace(/-/g, '/')
       };
       const token = CryptoJS.AES.encrypt(JSON.stringify(objToken), key);
       objToken.token = token.toString();
@@ -39,7 +42,7 @@ export function sendEmailTo(email) {
         // bcc: 'some-user@mail.com',            // almost any option of `nodemailer` will be passed to it
         subject: 'Your online test is ready',
         html: `<b>Hi,</b><br/>
-                          Access this <b>link</b> to connect to your test: ${URL}?inviteToken=${token}&hash=${objToken.emailHash}&problem=-LYCV9arvEqZFkNb5HUR<br/><br/> 
+                          Access this <b>link</b> to connect to your test: ${URL}/${problemId}?inviteToken=${token}&hash=${objToken.emailHash}<br/><br/> 
                           Best regards,<br/>
                           Testing team<br/>` // Plain text
         // html:    '<b>html text</b>'            // HTML
@@ -51,3 +54,4 @@ export function sendEmailTo(email) {
     }
   });
 }
+

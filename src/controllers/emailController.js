@@ -10,9 +10,11 @@ const router = Router();
  */
 router.post('/send', (req, res, next) => {
   emailService
-    .sendEmailTo(req.body.email)
+    .sendEmailTo(req.body.email, req.body.problem)
     .then(data => {
-      userService.addInvitedUser(data);
+      data.problem = req.body.problem;
+      data.invitedBy = req.body.invitedBy;
+      userService.addInvitation(data);
       res.send(data);
     })
     .catch(err => {

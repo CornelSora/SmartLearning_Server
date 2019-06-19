@@ -209,32 +209,31 @@ export function addInvitation(invitationInfo) {
     try {
       let invitationRef = database.ref(`invitations/${invitationInfo.emailHash}`);
       getFromFirebase(invitationRef)
-      .then((client) => {
-        invitationInfo.isAccepted = false;
-        if (client) {
-          if (client["invitations"].indexOf(invitationInfo) > -1) {
-            resolve('done')
+        .then(client => {
+          invitationInfo.isAccepted = false;
+          if (client) {
+            if (client['invitations'].indexOf(invitationInfo) > -1) {
+              resolve('done');
+            }
+            client['invitations'].push(invitationInfo);
+          } else {
+            client = {};
+            let invitations = [];
+            invitations.push(invitationInfo);
+            client['invitations'] = invitations;
           }
-          client["invitations"].push(invitationInfo);
-        } else {
-          client = {}
-          var invitations = []
-          invitations.push(invitationInfo);
-          client["invitations"] = invitations;
-        }
-        //  const client = JSON.parse(`{"${emailHash}": "${JSON.stringify(clientInfo)}"}`);
-        database.ref(`invitations/${invitationInfo.emailHash}`).set(client);
-        resolve('done');
-      })
-      .catch ((e) => {
-        reject(e);
-      })
+          //  const client = JSON.parse(`{"${emailHash}": "${JSON.stringify(clientInfo)}"}`);
+          database.ref(`invitations/${invitationInfo.emailHash}`).set(client);
+          resolve('done');
+        })
+        .catch(e => {
+          reject(e);
+        });
     } catch (e) {
       reject(e);
     }
   });
 }
-
 
 export function getFromFirebase(databaseRef) {
   return new Promise((resolve, reject) => {

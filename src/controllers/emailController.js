@@ -1,12 +1,13 @@
 import { Router } from 'express';
 import HttpStatus from 'http-status-codes';
 import * as emailService from '../services/emailService';
-import * as userService from '../services/userService';
+// import * as userService from '../services/userService';
+import * as invitationService from '../services/invitationService';
 
 const router = Router();
 
 /**
- * GET /api/users
+ * GET /api/emails
  */
 router.post('/send', (req, res, next) => {
   emailService
@@ -14,7 +15,18 @@ router.post('/send', (req, res, next) => {
     .then(data => {
       data.problem = req.body.problem;
       data.invitedBy = req.body.invitedBy;
-      userService.addInvitation(data);
+      invitationService.addInvitation(data);
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
+    });
+});
+
+router.get('/invitations/:email', (req, res, next) => {
+  invitationService
+    .getInvitations(req.params.email)
+    .then(data => {
       res.send(data);
     })
     .catch(err => {
@@ -23,7 +35,7 @@ router.post('/send', (req, res, next) => {
 });
 
 router.post('/isTokenValid', (req, res, next) => {
-  userService
+  invitationService
     .isTokenValid(req.body.token)
     .then(data => res.send(data))
     .catch(err => {

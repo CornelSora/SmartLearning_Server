@@ -4,6 +4,24 @@ import CryptoJS from 'crypto-js';
 
 const database = firebase.database;
 const auth = firebase.auth;
+
+export function getUserByFireabseUID(id) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      var allUsers = await getAllUsers();
+      for (var i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].uid == id) {
+          resolve(allUsers[i])
+        }
+      }
+      resolve(null);
+    } catch (e) {
+      console.log(e)
+      reject(e);
+    }
+  });
+}
+
 /**
  * Get all users.
  *
@@ -20,6 +38,7 @@ export function getAllUsers() {
         let usersIds = Object.keys(usersBD);
         for (let i = 0; i < usersIds.length; i++) {
           let currUser = usersBD[usersIds[i]];
+          currUser.key = usersIds[i];
           users.push(currUser);
         }
         resolve(users);
@@ -28,20 +47,6 @@ export function getAllUsers() {
       reject(e);
     }
   });
-
-  // return new Promise((resolve, reject) => {
-  //     usersData.once("value", (snapshot) => {
-  //     var usersBD = snapshot.val();
-  //     var usersIds = Object.keys(usersBD);
-  //     for (var i = 0; i < usersIds.length; i++) {
-  //       var currUser = usersBD[usersIds[i]];
-  //       currUser.UID = usersIds[i];
-  //       users.push(currUser);
-  //     }
-  //     resolve(users)
-  //   })
-  // });
-  //  return User.fetchAll();
 }
 
 /**
@@ -85,6 +90,7 @@ export function createUser(user) {
           if (!user.type) {
             user.type = 'Student';
           }
+          user.password = null;
           user.uid = r.user.uid;
           database
             .ref('users')
@@ -108,7 +114,7 @@ export function createUser(user) {
  * @return {Promise}
  */
 export function addNewClient(reqBody) {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     try {
       const userID = reqBody.userID;
       const clientInfo = reqBody.clientInfo;
@@ -119,7 +125,9 @@ export function addNewClient(reqBody) {
       let client = {};
       client[emailHash] = clientInfo;
       //  const client = JSON.parse(`{"${emailHash}": "${JSON.stringify(clientInfo)}"}`);
-      database.ref(`users/${userID}/clients`).update(client);
+      var user = await getUserByFireabseUID(userID);
+      console.log(user)
+      database.ref(`users/${user.key}/clients`).update(client);
       resolve('done');
     } catch (e) {
       reject(e);
@@ -132,13 +140,19 @@ export function addNewClient(reqBody) {
  * @return {Promise}
  */
 export function getClients(userID) {
-  let clientsData = database.ref(`users/${userID}/clients`);
   let clients = [];
-
-  return new Promise((resolve, reject) => {
+  
+  return new Promise(async (resolve, reject) => {
+    var user = await getUserByFireabseUID(userID);
+    console.log(user.key)
+    let clientsData = database.ref(`users/${user.key}/clients`);
     try {
       clientsData.once('value', snapshot => {
         let usersBD = snapshot.val();
+        if (!usersBD) {
+          resolve(clients);
+          return;
+        }
         let usersIds = Object.keys(usersBD);
         for (let i = 0; i < usersIds.length; i++) {
           let currUser = usersBD[usersIds[i]];

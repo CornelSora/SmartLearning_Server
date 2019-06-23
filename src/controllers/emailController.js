@@ -15,12 +15,15 @@ router.post('/send', (req, res, next) => {
     .then(data => {
       data.problem = req.body.problem;
       data.invitedBy = req.body.invitedBy;
-      invitationService.addInvitation(data);
-      res.send(data);
+      invitationService.addInvitation(data)
+      .then(() => {
+        res.send(data);
+      }).catch(err => {
+        console.log('sending error')
+        res.status(HttpStatus.CONFLICT).send(err.toString())
+      });  
     })
-    .catch(err => {
-      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
-    });
+    .catch(err => next(err));
 });
 
 router.get('/invitations/:email', (req, res, next) => {
@@ -29,18 +32,14 @@ router.get('/invitations/:email', (req, res, next) => {
     .then(data => {
       res.send(data);
     })
-    .catch(err => {
-      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
-    });
+    .catch(err => next(err));
 });
 
 router.post('/isTokenValid', (req, res, next) => {
   invitationService
     .isTokenValid(req.body.token)
     .then(data => res.send(data))
-    .catch(err => {
-      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
-    });
+    .catch(err => next(err));
 });
 
 export default router;

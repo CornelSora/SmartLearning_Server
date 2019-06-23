@@ -1,6 +1,7 @@
 import firebase from '../firebase/firebase.js';
 import { hashCode } from 'hashcode';
 import CryptoJS from 'crypto-js';
+import * as userService from './userService';
 
 const database = firebase.database;
 
@@ -17,15 +18,23 @@ export function isTokenValid(token) {
 }
 
 export function addInvitation(invitationInfo) {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     try {
+      invitationInfo.invitedByEmail = (await userService.getUserByFireabseUID(invitationInfo.invitedBy)).email
       let invitationRef = database.ref(`invitations/${invitationInfo.emailHash}`);
       getFromFirebase(invitationRef)
         .then(client => {
           invitationInfo.isAccepted = false;
           if (client) {
+            for (var i = 0; i < client['invitations'].length; i++) {
+              if (client['invitations'][i].invitedBy == invitationInfo.invitedBy && client['invitations'][i].problem == invitationInfo.problem) {
+                reject('Invitation for this user and the specified problem already sent')
+                return
+              }
+            }
             if (client['invitations'].indexOf(invitationInfo) > -1) {
               resolve('done');
+              return
             }
             client['invitations'].push(invitationInfo);
           } else {
@@ -47,6 +56,7 @@ export function addInvitation(invitationInfo) {
   });
 }
 
+// to do
 export function getInvitations(email) {
   return new Promise((resolve, reject) => {
     try {
@@ -70,7 +80,11 @@ export function updateInvitation(invitationInfo) {
     try {
       const emailHash = hashCode().value(invitationInfo.email);
       let invitationRef = database.ref(`invitations/${emailHash}`);
-      resolve(await getFromFirebase(invitationRef));
+      var toUpdate = await getFromFirebase(invitationRef);
+      console.log(toUpdate)
+      toUpdate['invitations'] = invitationInfo.invitations
+      database.ref(`invitations/${emailHash}`).set(toUpdate);
+      resolve('done')
     } catch (e) {
       reject(e);
     }

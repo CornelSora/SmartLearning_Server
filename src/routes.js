@@ -58,10 +58,10 @@ router.get('/', (req, res) => {
   });
 });
 
-router.use('/users', firebaseMiddleware.auth, usersController);
+router.use('/users', usersController);
 router.use('/account', accountController);
-router.use('/problems', firebaseMiddleware.auth, problemsController);
-router.use('/solutions', firebaseMiddleware.auth, solutionController);
-router.use('/emails', firebaseMiddleware.auth, emailController);
-router.use('/paypal', firebaseMiddleware.auth, paypalController);
+router.use('/problems', problemsController);
+router.use('/solutions', solutionController);
+router.use('/emails', emailController);
+router.use('/paypal', paypalController);
 export default router;

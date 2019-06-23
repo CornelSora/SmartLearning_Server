@@ -15,13 +15,14 @@ router.post('/send', (req, res, next) => {
     .then(data => {
       data.problem = req.body.problem;
       data.invitedBy = req.body.invitedBy;
-      invitationService.addInvitation(data)
-      .then(() => {
-        res.send(data);
-      }).catch(err => {
-        console.log('sending error')
-        res.status(HttpStatus.CONFLICT).send(err.toString())
-      });  
+      invitationService
+        .addInvitation(data)
+        .then(() => {
+          res.send(data);
+        })
+        .catch(err => {
+          res.status(HttpStatus.CONFLICT).send(err.toString());
+        });
     })
     .catch(err => next(err));
 });

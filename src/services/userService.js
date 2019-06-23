@@ -8,15 +8,14 @@ const auth = firebase.auth;
 export function getUserByFireabseUID(id) {
   return new Promise(async (resolve, reject) => {
     try {
-      var allUsers = await getAllUsers();
-      for (var i = 0; i < allUsers.length; i++) {
-        if (allUsers[i].uid == id) {
-          resolve(allUsers[i])
+      let allUsers = await getAllUsers();
+      for (let i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].uid === id) {
+          resolve(allUsers[i]);
         }
       }
       resolve(null);
     } catch (e) {
-      console.log(e)
       reject(e);
     }
   });
@@ -125,8 +124,7 @@ export function addNewClient(reqBody) {
       let client = {};
       client[emailHash] = clientInfo;
       //  const client = JSON.parse(`{"${emailHash}": "${JSON.stringify(clientInfo)}"}`);
-      var user = await getUserByFireabseUID(userID);
-      console.log(user)
+      let user = await getUserByFireabseUID(userID);
       database.ref(`users/${user.key}/clients`).update(client);
       resolve('done');
     } catch (e) {
@@ -141,16 +139,16 @@ export function addNewClient(reqBody) {
  */
 export function getClients(userID) {
   let clients = [];
-  
+
   return new Promise(async (resolve, reject) => {
-    var user = await getUserByFireabseUID(userID);
-    console.log(user.key)
+    let user = await getUserByFireabseUID(userID);
     let clientsData = database.ref(`users/${user.key}/clients`);
     try {
       clientsData.once('value', snapshot => {
         let usersBD = snapshot.val();
         if (!usersBD) {
           resolve(clients);
+
           return;
         }
         let usersIds = Object.keys(usersBD);

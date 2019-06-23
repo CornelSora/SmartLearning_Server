@@ -6,7 +6,6 @@ import problemsController from './controllers/problemsController';
 import solutionController from './controllers/solutionController';
 import emailController from './controllers/emailController';
 import paypalController from './controllers/paypalController';
-import * as firebaseMiddleware from 'express-firebase-middleware';
 
 /**
  * Contains all API routes for the application.

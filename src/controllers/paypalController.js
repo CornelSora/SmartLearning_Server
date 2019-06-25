@@ -13,7 +13,8 @@ router.get('/pay', (req, res, next) => {
       res.send(data.url);
     })
     .catch(err => {
-      console.log(err)
+      // TO DO: ADD LOGGER
+      console.log(err);
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
     });
 });

@@ -14,19 +14,21 @@ const FBAuth = (req, res, next) => {
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
       idToken = req.headers.authorization.split('Bearer ')[1];
     } else {
-      return res.status(401).json({error: 'Unauthorized'})
+      return res.status(401).json({ error: 'Unauthorized' });
     }
 
-    firebase.auth().verifyIdToken(idToken).then((data) => {
-      req.userID = data.user_id
-      next();
-    }).catch((err) =>  {
-      return res.status(403).json({error: err})
-    })
-  } catch (e) {
-    console.log(e)
-  }
-}
+    firebase
+      .auth()
+      .verifyIdToken(idToken)
+      .then(data => {
+        req.userID = data.user_id;
+        next();
+      })
+      .catch(err => {
+        return res.status(403).json({ error: err });
+      });
+  } catch (e) {}
+};
 
 //  app.use(FBAuth);
 /**

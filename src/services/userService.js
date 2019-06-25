@@ -41,7 +41,7 @@ export function getAllUsers() {
             currUser.key = usersIds[i];
             users.push(currUser);
           } catch (e) {
-
+            // TO DO: ADD LOGGER
           }
         }
         resolve(users);
@@ -268,41 +268,31 @@ export function getFromFirebase(databaseRef) {
 export function updateUserPaymentID(userID, paymentID) {
   return new Promise(async (resolve, reject) => {
     try {
-      console.log('-updating...');
-      console.log(userID);
-      var user = await this.getUserByFireabseUID(userID);
-      console.log(user);
+      let user = await this.getUserByFireabseUID(userID);
       user.paymentID = paymentID;
-      var key = user.key;
+      let key = user.key;
       user.key = null;
-      // console.log(user)
       database.ref(`users/${key}`).set(user);
-      resolve()
+      resolve();
     } catch (e) {
-      console.log(e)
-      reject(e)
+      reject(e);
     }
-  })
+  });
 }
 
 export function updateUserStatus(userID, paymentID) {
   return new Promise(async (resolve, reject) => {
     try {
-      var user = await this.getUserByFireabseUID(userID);
-      console.log('----user----------')
-      console.log(user)
-      console.log('---payment-------')
-      console.log(paymentID)
-      if (user.paymentID == paymentID) {
-        user.type = "premium";
+      let user = await this.getUserByFireabseUID(userID);
+      if (user.paymentID === paymentID) {
+        user.type = 'premium';
       }
-      var key = user.key;
+      let key = user.key;
       user.key = null;
       database.ref(`users/${key}`).set(user);
-      resolve()
+      resolve();
     } catch (e) {
-      console.log(e)
-      reject(e)
+      reject(e);
     }
-  })
+  });
 }

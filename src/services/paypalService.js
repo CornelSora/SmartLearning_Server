@@ -41,16 +41,12 @@ export function pay() {
   return new Promise((resolve, reject) => {
     paypal.payment.create(createPaymentJson, function(error, payment) {
       if (error) {
-        console.log("error")
         reject(error);
       } else {
-        // console.log('Create Payment Response');
-        console.log("payment successful")
-        // console.log(payment);
-        var result = {
+        let result = {
           url: payment.links.filter(x => x.method === 'REDIRECT')[0].href,
           paymentId: payment.id
-        }
+        };
         resolve(result);
       }
     });

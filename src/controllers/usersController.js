@@ -37,7 +37,6 @@ router.post('/', (req, res, next) => {
     .catch(err => next(err));
 });
 
-
 /**
  * PUT /api/users/updatestatus
  */
@@ -46,7 +45,7 @@ router.put('/updatestatus', (req, res, next) => {
     .updateUserStatus(req.body.userID, req.body.paymentId)
     .then(data => res.status(HttpStatus.CREATED).send(data))
     .catch(err => next(err));
-})
+});
 
 /**
  * POST /api/users/clients

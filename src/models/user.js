@@ -4,7 +4,7 @@
 class User {
   constructor(email, username, type, uid) {
     if (!type) {
-      this.type = 'Student';
+      this.type = 'Basic';
     } else {
       this.type = type;
     }

@@ -6,7 +6,29 @@ import problemsController from './controllers/problemsController';
 import solutionController from './controllers/solutionController';
 import emailController from './controllers/emailController';
 import paypalController from './controllers/paypalController';
+import firebase from 'firebase-admin';
 
+const FBAuth = (req, res, next) => {
+  try {
+    let idToken;
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+      idToken = req.headers.authorization.split('Bearer ')[1];
+    } else {
+      return res.status(401).json({error: 'Unauthorized'})
+    }
+
+    firebase.auth().verifyIdToken(idToken).then((data) => {
+      req.userID = data.user_id
+      next();
+    }).catch((err) =>  {
+      return res.status(403).json({error: err})
+    })
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+//  app.use(FBAuth);
 /**
  * Contains all API routes for the application.
  */
@@ -58,9 +80,9 @@ router.get('/', (req, res) => {
 });
 
 router.use('/users', usersController);
-router.use('/account', accountController);
-router.use('/problems', problemsController);
-router.use('/solutions', solutionController);
-router.use('/emails', emailController);
-router.use('/paypal', paypalController);
+router.use('/account', FBAuth, accountController);
+router.use('/problems', FBAuth, problemsController);
+router.use('/solutions', FBAuth, solutionController);
+router.use('/emails', FBAuth, emailController);
+router.use('/paypal', FBAuth, paypalController);
 export default router;

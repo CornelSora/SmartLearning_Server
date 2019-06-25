@@ -22,7 +22,7 @@ let createPaymentJson = {
           {
             name: 'premium',
             sku: 'premium_1234',
-            price: '2.99',
+            price: '4.99',
             currency: 'USD',
             quantity: 1
           }
@@ -30,7 +30,7 @@ let createPaymentJson = {
       },
       amount: {
         currency: 'USD',
-        total: '2.99'
+        total: '4.99'
       },
       description: 'This is the payment description.'
     }
@@ -41,11 +41,17 @@ export function pay() {
   return new Promise((resolve, reject) => {
     paypal.payment.create(createPaymentJson, function(error, payment) {
       if (error) {
+        console.log("error")
         reject(error);
       } else {
         // console.log('Create Payment Response');
+        console.log("payment successful")
         // console.log(payment);
-        resolve(payment.links.filter(x => x.method === 'REDIRECT')[0].href);
+        var result = {
+          url: payment.links.filter(x => x.method === 'REDIRECT')[0].href,
+          paymentId: payment.id
+        }
+        resolve(result);
       }
     });
   });

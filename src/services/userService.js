@@ -36,9 +36,13 @@ export function getAllUsers() {
         let usersBD = snapshot.val();
         let usersIds = Object.keys(usersBD);
         for (let i = 0; i < usersIds.length; i++) {
-          let currUser = usersBD[usersIds[i]];
-          currUser.key = usersIds[i];
-          users.push(currUser);
+          try {
+            let currUser = usersBD[usersIds[i]];
+            currUser.key = usersIds[i];
+            users.push(currUser);
+          } catch (e) {
+
+          }
         }
         resolve(users);
       });
@@ -87,7 +91,7 @@ export function createUser(user) {
         .createUserWithEmailAndPassword(user.email, user.password)
         .then(r => {
           if (!user.type) {
-            user.type = 'Student';
+            user.type = 'Basic';
           }
           user.password = null;
           user.uid = r.user.uid;
@@ -259,4 +263,46 @@ export function getFromFirebase(databaseRef) {
       reject(e);
     }
   });
+}
+
+export function updateUserPaymentID(userID, paymentID) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      console.log('-updating...');
+      console.log(userID);
+      var user = await this.getUserByFireabseUID(userID);
+      console.log(user);
+      user.paymentID = paymentID;
+      var key = user.key;
+      user.key = null;
+      // console.log(user)
+      database.ref(`users/${key}`).set(user);
+      resolve()
+    } catch (e) {
+      console.log(e)
+      reject(e)
+    }
+  })
+}
+
+export function updateUserStatus(userID, paymentID) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      var user = await this.getUserByFireabseUID(userID);
+      console.log('----user----------')
+      console.log(user)
+      console.log('---payment-------')
+      console.log(paymentID)
+      if (user.paymentID == paymentID) {
+        user.type = "premium";
+      }
+      var key = user.key;
+      user.key = null;
+      database.ref(`users/${key}`).set(user);
+      resolve()
+    } catch (e) {
+      console.log(e)
+      reject(e)
+    }
+  })
 }

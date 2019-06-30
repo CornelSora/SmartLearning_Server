@@ -12,8 +12,8 @@ let createPaymentJson = {
     payment_method: 'paypal'
   },
   redirect_urls: {
-    return_url: 'http://localhost:8080/#/updateaccount?success=true',
-    cancel_url: 'http://localhost:8080/#/updateaccount?cancel=true'
+    return_url: 'https://smart-learning-ad6a7.firebaseapp.com/#/updateaccount?success=true',
+    cancel_url: 'https://smart-learning-ad6a7.firebaseapp.com/#/updateaccount?cancel=true'
   },
   transactions: [
     {

@@ -1,7 +1,8 @@
 import { hashCode } from 'hashcode';
 import CryptoJS from 'crypto-js';
 const key = '1@!~abc';
-const URL = 'http://localhost:8080/#/problem';
+// const URL = 'http://localhost:8080/#/problem';
+const URL = 'https://smart-learning-ad6a7.firebaseapp.com/#/problem';
 
 // Decrypt
 //  let ciphertext =
@@ -42,7 +43,9 @@ export function sendEmailTo(email, problemId) {
         // bcc: 'some-user@mail.com',            // almost any option of `nodemailer` will be passed to it
         subject: 'Your online test is ready',
         html: `<b>Hi,</b><br/>
-                          Access this <b>link</b> to connect to your test: ${URL}/${problemId}?inviteToken=${token}&hash=${objToken.emailHash}<br/><br/> 
+                          Access this <b>link</b> to connect to your test: ${URL}/${problemId}?inviteToken=${token}&hash=${
+  objToken.emailHash
+}<br/><br/> 
                           Best regards,<br/>
                           Testing team<br/>` // Plain text
         // html:    '<b>html text</b>'            // HTML

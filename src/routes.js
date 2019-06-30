@@ -6,6 +6,7 @@ import problemsController from './controllers/problemsController';
 import solutionController from './controllers/solutionController';
 import emailController from './controllers/emailController';
 import paypalController from './controllers/paypalController';
+import codeforcesController from './controllers/codeforcesController';
 import firebase from 'firebase-admin';
 
 const FBAuth = (req, res, next) => {
@@ -87,4 +88,5 @@ router.use('/problems', FBAuth, problemsController);
 router.use('/solutions', FBAuth, solutionController);
 router.use('/emails', FBAuth, emailController);
 router.use('/paypal', FBAuth, paypalController);
+router.use('/codeforces', codeforcesController);
 export default router;

@@ -83,7 +83,7 @@ router.get('/', (req, res) => {
 });
 
 router.use('/users', usersController);
-router.use('/account', FBAuth, accountController);
+router.use('/account', accountController);
 router.use('/problems', FBAuth, problemsController);
 router.use('/solutions', FBAuth, solutionController);
 router.use('/emails', FBAuth, emailController);
